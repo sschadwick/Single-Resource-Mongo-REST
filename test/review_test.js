@@ -74,5 +74,16 @@ describe('the reviews resource', function() {
         done();
       });
     });
+
+    it('should validate and ask for more characters in review object', function(done) {
+      chai.request(url)
+      .put('/reviews/' + this.testReview._id)
+      .send({bookName: 'Yet another book', review: 'bad'}) //this review should be too short
+      .end(function(err, res) {
+        expect(err).to.eql(null);
+        expect(res.body.msg).to.eql('success'); 
+        done();
+      });
+    });
   });
 });
