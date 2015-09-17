@@ -5,6 +5,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var jsonParser = bodyParser.json();
 var handleError = require(__dirname + '/../lib/handle_error');
+var fs = require('fs');
 
 var reviewsRoute = module.exports = exports = express.Router();
 
@@ -37,5 +38,13 @@ reviewsRoute.delete('/reviews/:id', function(req, res) {
   Review.remove({_id: req.params.id}, function(err) {
     if (err) handleError(err, res); //might not need res here
     res.json({msg: 'success'});
+  });
+});
+
+reviewsRoute.get('/favReviews', function(req, res) {
+  Review.findOne({'favorite': 'true'}, 'bookName review favorite', function(err, fav) {
+    if (err) throw err;
+    console.log(fav.bookName);
+    res.json({msg: fav});
   });
 });

@@ -33,10 +33,10 @@ describe('the reviews resource', function() {
   it('should create a new review', function(done) {
     chai.request(url)
     .post('/reviews')
-    .send({bookName: 'Shitty book'})
+    .send({bookName: 'It was a good book'})
     .end(function(err, res) {
       expect(err).to.eql(null);
-      expect(res.body.bookName).to.eql('Shitty book');
+      expect(res.body.bookName).to.eql('It was a good book');
       expect(res.body.author).to.eql('Anonymous');
       done();
     });
@@ -46,9 +46,9 @@ describe('the reviews resource', function() {
   //before each requires slightly more resources
   describe('routes that require a review in db', function() {
     beforeEach(function(done) {
-      var testReview = new Review({bookName: 'Art of War'});
-      testReview.save(function(err, data) {
-        if (err) throw err;
+      var testReview = new Review({bookName: 'Phonebook', review: 'Riveting story.', favorite: true});
+      testReview.save(function(err, data) { //only working if review >= 10char
+        if (err) console.log(err.errors.review.message);
         this.testReview = data;
         done();
       }.bind(this));
@@ -75,13 +75,26 @@ describe('the reviews resource', function() {
       });
     });
 
+
     it('should validate and ask for more characters in review object', function(done) {
       chai.request(url)
       .put('/reviews/' + this.testReview._id)
       .send({bookName: 'Yet another book', review: 'bad'}) //this review should be too short
       .end(function(err, res) {
         expect(err).to.eql(null);
-        expect(res.body.msg).to.eql('success'); 
+        expect(err.errors.review.message).to.eql('You need to write more'); 
+        done();
+      });
+    });
+  });
+
+  describe('favReviews path', function() {
+    it('should return a list of favorited reviews', function(done) {
+      chai.request(url)
+      .get('/favReviews')
+      .end(function(err, res) {
+        expect(err).to.eql(null);
+        expect(res.body.msg.favorite).to.eql(true);
         done();
       });
     });
