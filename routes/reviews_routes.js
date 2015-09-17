@@ -42,9 +42,8 @@ reviewsRoute.delete('/reviews/:id', function(req, res) {
 });
 
 reviewsRoute.get('/favReviews', function(req, res) {
-  Review.findOne({'favorite': 'true'}, 'bookName review favorite', function(err, fav) {
+  Review.find({'favorite': 'true'}, 'bookName review favorite', function(err, fav) {
     if (err) throw err;
-    console.log(fav.bookName);
     res.json({msg: fav});
   });
 });

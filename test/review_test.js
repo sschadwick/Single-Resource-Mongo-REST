@@ -75,14 +75,13 @@ describe('the reviews resource', function() {
       });
     });
 
-
     it('should validate and ask for more characters in review object', function(done) {
       chai.request(url)
-      .put('/reviews/' + this.testReview._id)
-      .send({bookName: 'Yet another book', review: 'bad'}) //this review should be too short
+      .post('/reviews/')
+      .send({bookName: 'Yet another book', review: 'too short'}) //this review should be too short
       .end(function(err, res) {
-        expect(err).to.eql(null);
-        expect(err.errors.review.message).to.eql('You need to write more'); 
+        expect(res.status).to.eql(500);
+        expect(res.body.msg).to.eql('error encountered');
         done();
       });
     });
@@ -94,7 +93,8 @@ describe('the reviews resource', function() {
       .get('/favReviews')
       .end(function(err, res) {
         expect(err).to.eql(null);
-        expect(res.body.msg.favorite).to.eql(true);
+        expect(res.body.msg.length).to.be.above(0);
+        expect(res.body.msg[0].favorite).to.eql(true);
         done();
       });
     });
