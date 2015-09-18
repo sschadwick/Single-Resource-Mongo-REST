@@ -6,19 +6,19 @@ var eat = require('eat');
 
 var userSchema = new mongoose.Schema({
   username: {
-    type: String
-    // required: true,
-    // unique: true
+    type: String,
+    required: true,
+    unique: true
   },
   basic: {
     username: {
-      type: String
-      // required: true,
-      // unique: true
+      type: String,
+      required: true,
+      unique: true
     },
     password: {
-      type: String 
-      // required: true
+      type: String, 
+      required: true
       //validator for char length?
     }
   }

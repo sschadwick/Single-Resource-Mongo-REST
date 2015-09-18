@@ -49,8 +49,8 @@ describe('auth', function() {
   describe('user info in database', function() {
     before(function(done) { //add new user to database before tests
       var user = new User();
-      user.username = 'testuser1';
-      user.basic.username = 'testuser1';
+      user.username = 'testuser2';
+      user.basic.username = 'testuser2';
       user.generateHash('foobar123', function(err, res) {
         if (err) throw err;
         user.save(function(err, data) {
@@ -67,7 +67,7 @@ describe('auth', function() {
     it('should be able to sign in', function(done) {
       chai.request(host)
       .get('/signin')
-      .auth('testuser1', 'foobar123')
+      .auth('testuser2', 'foobar123')
       .end(function(err, res) {
         expect(err).to.eql(null);
         expect(res.body.token.length).to.be.above(0);
@@ -84,7 +84,7 @@ describe('auth', function() {
       };
 
       eatauth(req, {}, function() {
-        expect(req.user.username).to.eql('testuser1');
+        expect(req.user.username).to.eql('testuser2');
         done();
       });
     });
