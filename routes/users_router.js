@@ -23,3 +23,27 @@ usersRouter.post('/signup', jsonParser, function(req, res) {
     });
   });
 });
+
+usersRouter.post('/signin', httpBasic, function(req, res) {
+  User.findOne({'basic.username': req.auth.username}, function(err, user) {
+    if (err) handleError(err, res);
+
+    if (!user) {
+      console.log('could not authenticate user: ' + req.auth.username);
+      return res.status(401).json({msg: 'could not authenticate'});
+    }
+    user.compareHash(req.auth.password, function(err, hash) {
+      if (err) handleError(err, res);
+
+      if (!hashRes) {
+        console.log('could not authenticate user ' + req.auth.username);
+        return res.status(401).json({msg: 'authenticat says NON!'});
+      }
+
+      user.generateToken(function(err, token) {
+        if (err) handleError(err, res)
+          res.json({token: token});
+      });
+    });
+  });
+});
