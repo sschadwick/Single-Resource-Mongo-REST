@@ -27,25 +27,6 @@ describe('httpbasic', function() {
     });
   });
 
-  describe('user already in database', function() {
-    before(function(done) { //add new user to database before tests
-      var user = new User();
-      user.username = 'testuser';
-      user.basic.username = 'testuser';
-      user.generateHash('foobar123', function(err, res) {
-        if (err) throw err;
-        user.save(function(err, data) {
-          if (err) throw err;
-          user.generateToken(function(err, token) {
-            if (err) throw err;
-            this.token = token;
-            done();
-          }.bind(this));
-        }.bind(this));
-      }.bind(this));
-    });
-  });
-
   describe('auth', function() {
     after(function(done) {
       mongoose.db.dropDatabase(function() {
@@ -63,6 +44,52 @@ describe('httpbasic', function() {
         expect(res.body.token.length).to.be.above(0);
         done();
       })
+    });
+
+    describe('user info in database', function() {
+      before(function(done) { //add new user to database before tests
+        var user = new User();
+        user.username = 'testuser';
+        user.basic.username = 'testuser';
+        user.generateHash('foobar123', function(err, res) {
+          if (err) throw err;
+          user.save(function(err, data) {
+            if (err) throw err;
+            user.generateToken(function(err, token) {
+              if (err) throw err;
+              this.token = token;
+              done();
+            }.bind(this));
+          }.bind(this));
+        }.bind(this));
+      });
+
+      it('should be able to sign in', function(done) {
+        chai.request(host)
+        .get('/signin')
+        .auth('testuser', 'foobar123')
+        .end(function(err, res) {
+          expect(err).to.eql(null);
+          expect(res.body.token.length).to.be.above(0);
+          done();
+        });
+      });
+
+      it('should be able to authenticate the eat token', function(done) {
+        var token = this.token;
+        var req = {
+          headers: {
+            token: token
+          }
+        };
+
+        eatauth(req, {}, function() {
+          expect(req.user.username).to.eql('test');
+          done();
+        });
+      });
+
+
     });
   });
 
