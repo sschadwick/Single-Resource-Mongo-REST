@@ -5,7 +5,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var jsonParser = bodyParser.json();
 var handleError = require(__dirname + '/../lib/handle_error');
-var fs = require('fs');
+var eatauth = require(__dirname + '/../lib/eat_auth');
 
 var reviewsRoute = module.exports = exports = express.Router();
 
@@ -16,7 +16,7 @@ reviewsRoute.get('/reviews', function(req, res) {
   });
 });
 
-reviewsRoute.post('/reviews', jsonParser, function(req, res) {
+reviewsRoute.post('/reviews', jsonParser, eatauth, function(req, res) {
   var newReview = new Review(req.body);
   newReview.save(function(err, data) {
     if (err) handleError(err, res);
@@ -24,7 +24,7 @@ reviewsRoute.post('/reviews', jsonParser, function(req, res) {
   });
 });
 
-reviewsRoute.put('/reviews/:id', jsonParser, function(req, res) {
+reviewsRoute.put('/reviews/:id', jsonParser, eatauth, function(req, res) {
   var newReviewBody = req.body;
   delete newReviewBody._id;
 
@@ -34,14 +34,14 @@ reviewsRoute.put('/reviews/:id', jsonParser, function(req, res) {
   });
 });
 
-reviewsRoute.delete('/reviews/:id', function(req, res) {
+reviewsRoute.delete('/reviews/:id', jsonParser, eatauth, function(req, res) {
   Review.remove({_id: req.params.id}, function(err) {
     if (err) handleError(err, res); //might not need res here
     res.json({msg: 'success'});
   });
 });
 
-reviewsRoute.get('/favReviews', function(req, res) {
+reviewsRoute.get('/favReviews', jsonParser, function(req, res) {
   Review.find({'favorite': 'true'}, 'bookName review favorite', function(err, fav) {
     if (err) throw err;
     res.json({msg: fav});

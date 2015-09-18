@@ -4,6 +4,7 @@ var chai = require('chai');
 var chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 var expect = chai.expect;
+var User = require(__dirname + '/../models/user');
 
 process.env.MONGO_URL = 'mongodb://localhost/review_test';
 var server = require(__dirname + '/../../server.js');
@@ -18,6 +19,23 @@ describe('the reviews resource', function() {
       if (err) throw err;
       done();
     });
+  });
+
+  before(function(done) {
+    var user = new User();
+    user.username = 'test';
+    user.basic.username = 'test'; //in case we need it
+    user.generateHash('foobar123', function(err, res) {
+      if (err) throw err;
+      user.save(function(err, data) {
+        if (err) throw err;
+        user.generateToken(function(err, token) {
+          if (err) throw err;
+          this.token = token;
+          done();
+        }.bind(this));
+      }.bind(this));
+    }.bind(this));
   });
 
   it('should be able to get reviews', function(done) {
