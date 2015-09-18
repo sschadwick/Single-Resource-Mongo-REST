@@ -8,7 +8,7 @@ process.env.MONGO_URL = 'mongodb://localhost/reviews_test';
 require(__dirname + '/../server');
 var mongoose = require('mongoose');
 var User = require(__dirname + '/../models/user');
-// var eatauth = require(__dirname + '/../lib/eat_auth');
+var eatauth = require(__dirname + '/../lib/eat_auth');
 var httpBasic = require(__dirname + '/../lib/http_basic');
 var host = 'localhost:3000/api';
 
@@ -16,23 +16,19 @@ describe('httpbasic', function() {
   it('should be able to handle http basic auth', function() {
     var req = { //simulate request
       headers: {
-        authorization: 'Basic ' + (new Buffer('test:123')).toString('base64')
+        authorization: 'Basic ' + (new Buffer('testuser:foobar123')).toString('base64')
       }
     };
 
     httpBasic(req, {}, function() {
       expect(typeof req.auth).to.eql('object');
       expect(req.auth.username).to.eql('testuser');
-      expect(req.auth.password).to.eql('foobar');
+      expect(req.auth.password).to.eql('foobar123');
     });
   });
 
   describe('auth', function() {
-    after(function(done) {
-      mongoose.db.dropDatabase(function() {
-        done();
-      });
-    });
+  
 
     it('should be able to create a new user', function(done) {
       chai.request(host)
