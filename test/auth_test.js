@@ -47,7 +47,7 @@ describe('auth', function() {
   });
 
   describe('user info in database', function() {
-    after(function(done) { //add new user to database before tests
+    before(function(done) { //add new user to database before tests
       var user = new User();
       user.username = 'testuser1';
       user.basic.username = 'testuser1';
@@ -84,7 +84,7 @@ describe('auth', function() {
       };
 
       eatauth(req, {}, function() {
-        expect(req.user.username).to.eql('test');
+        expect(req.user.username).to.eql('testuser1');
         done();
       });
     });

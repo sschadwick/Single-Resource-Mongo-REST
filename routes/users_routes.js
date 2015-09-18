@@ -27,14 +27,11 @@ usersRouter.post('/signup', jsonParser, function(req, res) {
 usersRouter.get('/signin', httpBasic, function(req, res) {
   User.findOne({'basic.username': req.auth.username}, function(err, user) {
     if (err) return handleError(err, res);
-    debugger;
-    //user undefined
     if (!user) {
       console.log('could not authenticate user: ' + req.auth.username);
       return res.status(401).json({msg: 'could not authenticate'});
     }
     user.compareHash(req.auth.password, function(err, hashRes) {
-      debugger;
       if (err) return handleError(err, res);
       if (!hashRes) {
         console.log('could not authenticate user ' + req.auth.username);
