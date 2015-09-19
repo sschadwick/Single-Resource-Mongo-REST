@@ -39,26 +39,27 @@ ee.on('generateToken', function(req, res, newUser) {
 });
 
 
-
-
-//pyramid of doom
 usersRouter.get('/signin', httpBasic, function(req, res) {
+  ee.emit('findOne', req, res);
+});
+
+ee.on('findOne', function(req, res) {
   User.findOne({'basic.username': req.auth.username}, function(err, user) {
     if (err) return handleError(err, res);
-    if (!user) {
-      console.log('could not authenticate user: ' + req.auth.username);
-      return res.status(401).json({msg: 'could not authenticate'});
-    }
-    user.compareHash(req.auth.password, function(err, hashRes) {
-      if (err) return handleError(err, res);
-      if (!hashRes) {
-        console.log('could not authenticate user ' + req.auth.username);
-        return res.status(401).json({msg: 'authenticat says NON!'});
-      }
-      user.generateToken(function(err, token) {
-        if (err) return handleError(err, res);
-          res.json({token: token});
-      });
-    });
+    if (!user) ee.emit('return401', res);
+    ee.emit('compareHash', req, res, user);
   });
 });
+
+ee.on('compareHash', function(req, res, user) {
+  user.compareHash(req.auth.password, function(err, hashRes) {
+    if (err) return handleError(err, res);
+    if (!hashRes) ee.emit('return401', res);
+    ee.emit('generateToken', req, res, user);
+  });
+});
+
+ee.on('return401', function(res) {
+  return res.status(401).json({msg: 'could not authenticate'});
+});
+
