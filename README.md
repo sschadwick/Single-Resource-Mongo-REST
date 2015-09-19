@@ -1,4 +1,5 @@
 # Single-Resource-Mongo-REST
+[![Build Status](https://travis-ci.org/sschadwick/Single-Resource-Mongo-REST.svg)](https://travis-ci.org/sschadwick/Single-Resource-Mongo-REST)
 
 This is a single resource REST api for writing book reviews.
 
