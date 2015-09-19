@@ -21,6 +21,10 @@ gulp.task('test', function() {
     .pipe(mocha({reporter: 'nyan'}));
 });
 
+gulp.task('watch', function() {
+  return gulp.watch(filesToWatch, ['default']);
+});
+
 gulp.task('webpack:dev', function() {
   return gulp.src('./app/js/client.js')
     .pipe(webpack({

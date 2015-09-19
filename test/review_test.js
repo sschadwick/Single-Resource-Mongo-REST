@@ -23,7 +23,8 @@ describe('the reviews resource', function() {
       done();
     });
   });
-    //PYRAMID OF DOOM
+
+  //tests that ee alternative in users_routes works the same as the PYRAMIDS OF DOOM
   before(function(done) {
     var user = new User();
     user.username = 'test'; 
