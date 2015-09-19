@@ -26,7 +26,7 @@ describe('the reviews resource', function() {
     //PYRAMID OF DOOM
   before(function(done) {
     var user = new User();
-    user.username = 'test'; //ALSO INCONSISTENT NAMING
+    user.username = 'test'; 
     user.basic.username = 'test';
     user.generateHash('foobar123', function(err, res) {
       if (err) throw err;
@@ -100,7 +100,7 @@ describe('the reviews resource', function() {
     it('should validate and ask for more characters in review object', function(done) {
       chai.request(url)
       .post('/reviews/')
-      .send({bookName: 'Yet another book', review: 'too short', token: this.token}) //this review should be too short
+      .send({bookName: 'Yet another book', review: 'too short', token: this.token})
       .end(function(err, res) {
         expect(res.status).to.eql(500);
         expect(res.body.msg).to.eql('error encountered');
