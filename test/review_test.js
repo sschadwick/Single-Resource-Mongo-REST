@@ -10,8 +10,11 @@ require(__dirname + '/../server');
 var mongoose = require('mongoose');
 var url = 'localhost:3000/api';
 
+var EventEmitter = require('events').EventEmitter;
+var ee = new EventEmitter();
+
 var Review = require(__dirname + '/../models/review');
-var User = require(__dirname + '/../models/user')
+var User = require(__dirname + '/../models/user');
 
 describe('the reviews resource', function() {
   after(function(done) {
@@ -20,11 +23,11 @@ describe('the reviews resource', function() {
       done();
     });
   });
-    
+    //PYRAMID OF DOOM
   before(function(done) {
     var user = new User();
     user.username = 'test';
-    user.basic.username = 'test'; //in case we need it
+    user.basic.username = 'test';
     user.generateHash('foobar123', function(err, res) {
       if (err) throw err;
       user.save(function(err, data) {
