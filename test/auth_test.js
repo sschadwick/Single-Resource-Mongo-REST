@@ -61,11 +61,13 @@ describe('auth', function() {
     });
   });
 
+  //PYRAMID OF DOOM
   describe('user info in database', function() {
     before(function(done) { //add new user to database before tests
       var user = new User();
       user.username = 'testuser2';
       user.basic.username = 'testuser2';
+
       user.generateHash('foobar123', function(err, res) {
         if (err) throw err;
         user.save(function(err, data) {
