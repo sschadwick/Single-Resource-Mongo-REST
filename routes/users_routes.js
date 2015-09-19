@@ -10,7 +10,6 @@ var ee = new EventEmitter();
 
 var usersRouter = module.exports = exports = express.Router();
 
-//pyramid of doom
 usersRouter.post('/signup', jsonParser, function(req, res) {
   var newUser = new User();
   newUser.basic.username = req.body.username;
