@@ -26,7 +26,7 @@ describe('the reviews resource', function() {
     //PYRAMID OF DOOM
   before(function(done) {
     var user = new User();
-    user.username = 'test';
+    user.username = 'test'; //ALSO INCONSISTENT NAMING
     user.basic.username = 'test';
     user.generateHash('foobar123', function(err, res) {
       if (err) throw err;
