@@ -14,30 +14,32 @@ usersRouter.post('/signup', jsonParser, function(req, res) {
   var newUser = new User();
   newUser.basic.username = req.body.username;
   newUser.username = req.body.username;
-
-  ee.on('generateHash', function() {
-    newUser.generateHash(req.body.password, function(err, hash) {
-      if (err) return handleError(err, res);
-      ee.emit('save');
-    }.bind(this));
-  });
-
-  ee.on('save', function() {
-    newUser.save(function(err, data) {
-      if (err) return handleError(err, res);
-      ee.emit('generateToken');
-    }.bind(this));
-  });
-
-  ee.on('generateToken', function() {
-    newUser.generateToken(function(err, token) {
-      if (err) return handleError(err, res);
-      res.json({token: token});
-    }.bind(this));
-  });
-
-  ee.emit('generateHash');
+  ee.emit('generateHash', req, res, newUser);
 });
+
+ee.on('generateHash', function(req, res, newUser) {
+  newUser.generateHash(req.body.password, function(err, hash) {
+    if (err) return handleError(err, res);
+    ee.emit('save', req, res, newUser, hash);
+  }.bind(this));
+});
+
+ee.on('save', function(req, res, newUser, hash) {
+  newUser.save(function(err, data) {
+    if (err) return handleError(err, res);
+    ee.emit('generateToken', req, res, newUser);
+  }.bind(this));
+});
+
+ee.on('generateToken', function(req, res, newUser) {
+  newUser.generateToken(function(err, token) {
+    if (err) return handleError(err, res);
+    res.json({token: token});
+  }.bind(this));
+});
+
+
+
 
 //pyramid of doom
 usersRouter.get('/signin', httpBasic, function(req, res) {
