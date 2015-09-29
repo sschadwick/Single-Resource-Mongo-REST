@@ -1,15 +1,21 @@
 <!DOCTYPE html>
 <html>
- <head>
-  <meta charset="UTF-8">
-  <title>title</title>
- </head>
- <body data-ng-app="notesApp">
- <main data-ng-controller="notesController">
-   <h1>{{greeting}}</h1>
-   <input type="text" data-ng-model="greeting">
- </main>
+  <head>
+    <meta charset="UTF-8">
+    <title>Book Review</title>
+  </head>
+
+  <body data-ng-app="reviewsApp">
+    <main data-ng-controller="reviewsController">
+      <h1>{{greeting}}</h1>
+      <input type="text" data-ng-model="greeting">
+      <p>This app lets users write and publish book reviews. Authentication is required to leave a review.</p>
+      <ul>
+        <li>App uses bcrypt and eat to authenticate</li>
+        <li>Reviews and users are stored in MongoDB</li>
+        <li>The front end is built using Angular</li>
+    </main>
   
-  <script src="bundle.js"></script>
- </body>
+    <script src="bundle.js"></script>
+  </body>
 </html>

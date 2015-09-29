@@ -5,8 +5,10 @@ var jshint = require('gulp-jshint');
 var gulpMocha = require('gulp-mocha');
 var watch = require('gulp-watch');
 var webpack = require('webpack-stream');
+var webPackServer = require('webpack-dev-server');
 
-var filesToWatch = ['server.js', 'routes/*.js', 'models/*.js', 'lib/*.js', 'test/**/*.js', 'gulpfile.js'];
+var filesToWatch = ['server.js', 'routes/*.js', 'models/*.js', 'lib/*.js', 'test/**/*.js', 'gulpfile.js', 'app/**/*.js'];
+var appFiles = ['app/**/*.html', 'app/**/*.js'];
 
 gulp.task('jshint', function() {
   return gulp.src(filesToWatch)

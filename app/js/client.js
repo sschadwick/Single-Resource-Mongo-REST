@@ -1,7 +1,7 @@
 require('angular/angular');
 
-var notesApp = angular.module('notesApp', []);
+var reviewsApp = angular.module('reviewsApp', []);
 
-notesApp.controller('notesController', ['$scope', function($scope) {
-  $scope.greeting = 'hello world';
+reviewsApp.controller('reviewsController', ['$scope', function($scope) {
+  $scope.greeting = 'Salutations';
 }]);
