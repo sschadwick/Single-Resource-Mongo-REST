@@ -36,6 +36,18 @@ gulp.task('staticFiles:dev', function() {
     .pipe(gulp.dest('build/'));
 });
 
+gulp.task('webpack-dev-server:dev', function() {
+  var config = webpack({});
+
+  new webPackServer(config).listen(8080, 'localhost', function(err) {
+    if (err) throw err;
+  });
+});
+
+gulp.task('serve:dev', function() {
+  return gulp.watch(appFiles, ['webpack:dev', 'staticFiles:dev', 'webpack-dev-server:dev']);
+});
+
 gulp.task('watch', function() {
   return gulp.watch(filesToWatch, ['default']);
 });
