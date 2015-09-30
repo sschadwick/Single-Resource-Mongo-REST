@@ -3,7 +3,6 @@
 var gulp = require('gulp');
 var jshint = require('gulp-jshint');
 var gulpMocha = require('gulp-mocha');
-var watch = require('gulp-watch');
 var webpack = require('webpack-stream');
 var webPackServer = require('webpack-dev-server');
 

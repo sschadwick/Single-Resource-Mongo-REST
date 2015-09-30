@@ -4,16 +4,30 @@
     <meta charset="UTF-8">
     <title>Book Review</title>
   </head>
-
   <body data-ng-app="reviewsApp">
-    <main data-ng-controller="reviewsController">
-      <h1>{{greeting}}</h1>
-      <input type="text" data-ng-model="greeting">
-      <p>This app lets users write and publish book reviews. Authentication is required to leave a review.</p>
-      <ul>
-        <li>App uses bcrypt and eat to authenticate</li>
-        <li>Reviews and users are stored in MongoDB</li>
-        <li>The front end is built using Angular</li>
+  
+    <main data-ng-controller="reviewsController" data-ng-init="getAll()">
+      <h1>Reviews App:</h1>
+      <form name="newReviewForm" data-ng-submit="createReview(newReview)">
+        <label for="reviewBody">New Review:
+          <input type="text" required data-ng-model="newReview.reviewBody">
+        </label>
+        <button type="submit" data-ng-disabled="newReviewForm.$invalid">Create New Review</button>
+      </form>
+
+      <ul id="reviewsList">
+        <li class="{{review.status}}" data-ng-repeat="review in reviews">
+          <span data-ng-if="!review.editing">{{review.reviewBody}}
+            <button data-ng-click="review.editing = true">Edit</button>
+            <button data-ng-click="removeReview(review)">Delete</button>
+          </span>
+          <form data-ng-if="review.editing" name="{{'reviewForm' + review._id}}" data-ng-submit="updateReview(review)">
+            <input type="text" data-ng-model="review.reviewBody">
+            <button type="submit">Save Changes</button>
+          </form>
+          <button data-ng-if="!review.editing" data-ng-click="review.editing = false">Cancel</button>
+        </li>
+      </ul>
     </main>
   
     <script src="bundle.js"></script>
