@@ -18,14 +18,14 @@
       <ul id="reviewsList">
         <li class="{{review.status}}" data-ng-repeat="review in reviews">
           <span data-ng-if="!review.editing">{{review.bookName}}
-            <button data-ng-click="review.editing = true">Edit</button>
+            <button data-ng-click="editReview(review)">Edit</button>
             <button data-ng-click="removeReview(review)">Delete</button>
           </span>
           <form data-ng-if="review.editing" name="{{'reviewForm' + review._id}}" data-ng-submit="updateReview(review)">
             <input type="text" data-ng-model="review.bookName">
             <button type="submit">Save Changes</button>
-          </form>
-          <button type="button" data-ng-if="!review.editing" data-ng-click="review.editing = false">Cancel</button>
+            <button type="button" data-ng-click="cancelUpdate(review)">Cancel</button>
+          </form>            
         </li>
       </ul>
     </main>

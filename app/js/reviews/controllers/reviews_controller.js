@@ -34,6 +34,16 @@ module.exports = function(app) {
         });
     };
 
+    $scope.editReview = function(review) {
+      review.storeBookName = review.bookName;
+      review.editing = true;
+    };
+
+    $scope.cancelUpdate = function(review) {
+      review.bookName = review.storeBookName;
+      review.editing = false;
+    };
+
     $scope.removeReview = function(review) {
       review.status = 'pending';
       $http.delete('/api/reviews/' + review._id)
@@ -44,6 +54,7 @@ module.exports = function(app) {
           console.log(res);
         });
     };
+
 
   }]);
 };
