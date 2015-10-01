@@ -41,4 +41,5 @@ gulp.task('watch', function() {
 
 gulp.task('build:dev', ['staticFiles:dev', 'webpack:dev']);
 
-gulp.task('default', ['build:dev', 'jshint', 'test']);
+//TODO add jshint and test tasks
+gulp.task('default', ['build:dev']);
