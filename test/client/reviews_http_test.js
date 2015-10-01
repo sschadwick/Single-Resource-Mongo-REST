@@ -48,7 +48,13 @@ describe('notes controller', function() {
       expect($scope.newReview).toBe(null);
     });
 
-    it('should be able to update a book review');
+    it('should be able to update a book review', function(){
+      $httpBackend.expectPUT('/api/reviews/1', {bookName: 'UPDATE the book', _id: 1, status: 'pending'}).respond(200);
+      var review = {bookName: 'UPDATE the book', _id: 1};
+      $scope.updateReview(review);
+      $httpBackend.flush();
+      expect(review.bookName).toBe('UPDATE the book');
+    });
 
     it('should be able to delete a book review', function() {
       $httpBackend.expectDELETE('/api/reviews/1').respond(200);
