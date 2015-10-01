@@ -12,7 +12,6 @@ app.use(express.static(__dirname + '/build'));
 var reviewRouter = require(__dirname + '/routes/reviews_routes');
 app.use('/api', reviewRouter);
 
-
-app.listen(port, function() {
+module.exports = app.listen(port, function() {
   console.log('server is running on ' + port);
 });

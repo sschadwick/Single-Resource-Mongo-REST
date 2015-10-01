@@ -6,14 +6,14 @@ chai.use(chaiHttp);
 var expect = chai.expect;
 
 process.env.MONGO_URL = 'mongodb://localhost/review_test';
-require(__dirname + '/../server');
+var server = require(__dirname + '/../../server.js');
 var mongoose = require('mongoose');
 var url = 'localhost:3000/api/';
-
-var Review = require(__dirname + '/../models/review');
+var Review = require(__dirname + '/../../models/review');
 
 describe('the reviews resource', function() {
   after(function(done) {
+    server.close();
     mongoose.connection.db.dropDatabase(function(err) {
       if (err) throw err;
       done();
