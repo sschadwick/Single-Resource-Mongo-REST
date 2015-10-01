@@ -1,3 +1,3 @@
 module.exports = function(app) {
-  requrie('./controllers/reviews_controller')(app);
+  require('./controllers/reviews_controller')(app);
 };

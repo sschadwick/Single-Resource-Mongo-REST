@@ -19,6 +19,7 @@ reviewsRoute.get('/reviews', function(req, res) {
 reviewsRoute.post('/reviews', jsonParser, function(req, res) {
   var newReview = new Review(req.body);
   newReview.save(function(err, data) {
+    console.log(err);
     if (err) handleError(err, res);
     res.json(data);
   });
