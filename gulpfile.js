@@ -2,9 +2,10 @@
 
 var gulp = require('gulp');
 var jshint = require('gulp-jshint');
-var gulpMocha = require('gulp-mocha');
+var mocha = require('gulp-mocha');
 var webpack = require('webpack-stream');
 var webPackServer = require('webpack-dev-server');
+var Karma = require('karma').Server;
 
 var filesToWatch = ['server.js', 'routes/*.js', 'models/*.js', 'lib/*.js', 'test/**/*.js', 'gulpfile.js', 'app/**/*.js'];
 var appFiles = ['app/**/*.html', 'app/**/*.js']; //dont want to jshint html files
@@ -17,7 +18,7 @@ gulp.task('jshint', function() {
 
 gulp.task('test', function() {
   return gulp.src('test/**/*test.js')
-    .pipe(gulpMocha({reporter: 'nyan'}));
+    .pipe(mocha({reporter: 'nyan'}));
 }); 
 
 gulp.task('webpack:dev', function() {
@@ -30,9 +31,38 @@ gulp.task('webpack:dev', function() {
   .pipe(gulp.dest('build/'));
 });
 
+gulp.task('webpack:test', function() {
+  return gulp.src('./test/client/entry.js')
+    .pipe(webpack({
+      output: {
+        filename: 'test_bundle.js'
+      }
+    }))
+    .pipe(gulp.dest('test/client'));
+});
+
 gulp.task('staticFiles:dev', function() {
   return gulp.src('./app/**/*.html')
     .pipe(gulp.dest('build/'));
+});
+
+gulp.task('servertest', function() {
+  return gulp.src('./test/api_test/**.*test.js')
+    .pipe(mocha({reporter: 'nyan'}))
+    .once('error', function(err) {
+      console.log(err);
+      process.exit(1);
+    })
+    .once('end', function() {
+      if (this.seq.length === 1 && this.seq[0] === 'servertests')
+        process.exit();
+    }.bind(this));
+});
+
+gulp.task('karmatests', ['webpack:test'], function(done) {
+  new Karma({
+    configFile: __dirname + '/karma.conf.js'
+  }, done).start();
 });
 
 gulp.task('watch', function() {
@@ -41,5 +71,5 @@ gulp.task('watch', function() {
 
 gulp.task('build:dev', ['staticFiles:dev', 'webpack:dev']);
 
-//TODO add jshint and test tasks
-gulp.task('default', ['build:dev']);
+//TODO add jshint, servertest tasks, build:dev.
+gulp.task('default', ['karmatests']);
