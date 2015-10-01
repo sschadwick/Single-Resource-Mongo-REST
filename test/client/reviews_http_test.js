@@ -39,14 +39,14 @@ describe('notes controller', function() {
       expect($scope.reviews[0].bookName).toBe('test book');
     });
 
-    // it('should be able to create a book review', function() {
-    //   $httpBackend.expectPOST('/api/reviews', {bookName: 'POST test book'}).respond(200, {_id: 1, bookName: 'test name'});
-    //   $scope.newReview = {bookName: 'Hello'};
-    //   $scope.createReview = {bookName: 'POST test book'};
-    //   $httpBackend.flush();
-    //   expect($scope.reviews[0].bookName).toBe('test name');
-    //   expect($scope.newReview).toBe(null);
-    // });
+    it('should be able to create a book review', function() {
+      $httpBackend.expectPOST('/api/reviews', {bookName: 'POST test book'}).respond(200, {_id: 1, bookName: 'test name'});
+      $scope.newReview = {bookName: 'Hello'};
+      $scope.createReview({bookName: 'POST test book'});
+      $httpBackend.flush();
+      expect($scope.reviews[0].bookName).toBe('test name');
+      expect($scope.newReview).toBe(null);
+    });
 
 
   });
