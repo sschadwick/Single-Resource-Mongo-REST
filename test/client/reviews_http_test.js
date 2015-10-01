@@ -48,6 +48,15 @@ describe('notes controller', function() {
       expect($scope.newReview).toBe(null);
     });
 
+    it('should be able to update a book review');
 
+    it('should be able to delete a book review', function() {
+      $httpBackend.expectDELETE('/api/reviews/1').respond(200);
+      var review = {bookName: 'DELETE this book', _id: 1};
+      $scope.reviews.push(review);
+      $scope.removeReview(review);
+      $httpBackend.flush();
+      expect($scope.reviews.length).toBe(0);
+    });
   });
 });
