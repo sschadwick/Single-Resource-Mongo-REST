@@ -48,12 +48,13 @@ describe('notes controller', function() {
       expect($scope.newReview).toBe(null);
     });
 
-    it('should be able to update a book review', function(){
-      $httpBackend.expectPUT('/api/reviews/1', {bookName: 'UPDATE the book', _id: 1, status: 'pending'}).respond(200);
-      var review = {bookName: 'UPDATE the book', _id: 1};
+    it('should be able to update a book review', function() {
+      var review = {bookName: 'UPDATE the book', _id: 1, editing: true};
+      $httpBackend.expectPUT('/api/reviews/1', review).respond(200);
       $scope.updateReview(review);
       $httpBackend.flush();
       expect(review.bookName).toBe('UPDATE the book');
+      expect(review.editing).toBe(false);
     });
 
     it('should be able to delete a book review', function() {
@@ -63,6 +64,7 @@ describe('notes controller', function() {
       $scope.removeReview(review);
       $httpBackend.flush();
       expect($scope.reviews.length).toBe(0);
+      expect($scope.notes.indexOf(note)).toBe(-1);
     });
   });
 });
