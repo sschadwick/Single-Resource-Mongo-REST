@@ -27,12 +27,12 @@ module.exports = function(app) {
     };
 
     Resource.prototype.update = function(resource, callback) {
-      $http.put('/api/' + resource._id, resource)
+      $http.put('/api/reviews/' + resource._id, resource)
         .then(handleSuccess(callback), handleFailure(callback));
     };
 
     Resource.prototype.remove = function(resource, callback) {
-      $http.delete('/api/' + resource._id)
+      $http.delete('/api/reviews/' + resource._id)
         .then(handleSuccess(callback), handleFailure(callback));
     };
 

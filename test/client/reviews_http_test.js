@@ -64,7 +64,7 @@ describe('notes controller', function() {
       $scope.removeReview(review);
       $httpBackend.flush();
       expect($scope.reviews.length).toBe(0);
-      expect($scope.notes.indexOf(note)).toBe(-1);
+      expect($scope.reviews.indexOf(review)).toBe(-1);
     });
   });
 });

@@ -1,37 +1,28 @@
 module.exports = function(app) {
-  app.controller('ReviewsController', ['$scope', '$http', function($scope, $http) {
+  app.controller('ReviewsController', ['$scope', 'Resource', '$http', function($scope, Resource, $http) {
     $scope.reviews = [];
+    var reviewsResource = Resource('reviews');
 
     $scope.getAll = function() {
-      $http.get('/api/reviews')
-        .then(function(res) {
-          $scope.reviews = res.data;
-        }, function(res) {
-          console.log(res);
-        });
+      reviewsResource.getAll(function(err, data) {
+        if (err) {return console.log(err);}
+        $scope.reviews = data;
+      });
     };
 
     $scope.createReview = function(review) {
-      $http.post('/api/reviews', review)
-        .then(function(res) {
-          $scope.reviews.push(res.data);
-          $scope.newReview = null;
-        }, function(res) {
-          console.log(res);
-        });
+      reviewsResource.create(review, function(err, data) {
+        if (err) {return console.log(err);}
+        $scope.newReview = null;
+        $scope.reviews.push(data);
+      });
     };
 
     $scope.updateReview = function(review) {
-      review.status = 'pending';
-      $http.put('/api/reviews/' + review._id, review)
-        .then(function(res) {
-          delete review.status;
-          review.editing = false;
-        }, function(res) {
-          console.log(res);
-          review.status = 'failed';
-          review.editing = false;
-        });
+      reviewsResource.update(review, function(err) {
+        if (err) {return console.log(err);}
+        review.editing = false;
+      });
     };
 
     $scope.editReview = function(review) {
@@ -45,14 +36,10 @@ module.exports = function(app) {
     };
 
     $scope.removeReview = function(review) {
-      review.status = 'pending';
-      $http.delete('/api/reviews/' + review._id)
-        .then(function() {
-          $scope.reviews.splice($scope.reviews.indexOf(review), 1);
-        }, function(res) {
-          review.status = 'failed';
-          console.log(res);
-        });
+      reviewsResource.remove(review, function(err) {
+        if (err) {return console.log(err);}
+        $scope.reviews.splice($scope.reviews.indexOf(review), 1);
+      });
     };
 
   }]);
