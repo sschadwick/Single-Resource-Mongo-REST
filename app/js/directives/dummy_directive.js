@@ -3,7 +3,11 @@ module.exports = function(app) {
     return {
       restrict: 'A',
       replace: true,
-      template: '<form><h1>{{greeting}}</h1><input type="text" data-ng-model="greeting"></form>'
+      templateUrl: '/templates/directives/dummy_directive_template.html',
+      scope: {
+        foo: '=',
+        bar: '@'
+      }
     };
   });
 };

@@ -45,7 +45,7 @@ describe('notes controller', function() {
       $scope.createReview({bookName: 'POST test book'});
       $httpBackend.flush();
       expect($scope.reviews[0].bookName).toBe('test name');
-      expect($scope.newReview).toBe(null);
+      expect(typeof $scope.newReview).toBe('object'); //newReview should be an empty object
     });
 
     it('should be able to update a book review', function() {

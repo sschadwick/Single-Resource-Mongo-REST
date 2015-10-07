@@ -1,7 +1,15 @@
 module.exports = function(app) {
   app.controller('ReviewsController', ['$scope', 'Resource', '$http', function($scope, Resource, $http) {
     $scope.reviews = [];
+    $scope.newReview = {};
     var reviewsResource = Resource('reviews');
+
+    $scope.description = 'this is my app description';
+
+    $scope.printDescription = function(description) {
+      console.log('from the function: ' + description);
+      console.log('from $scope: ' + $scope.description);
+    };
 
     $scope.getAll = function() {
       reviewsResource.getAll(function(err, data) {
@@ -13,7 +21,7 @@ module.exports = function(app) {
     $scope.createReview = function(review) {
       reviewsResource.create(review, function(err, data) {
         if (err) {return console.log(err);}
-        $scope.newReview = null;
+        $scope.newReview = {};
         $scope.reviews.push(data);
       });
     };

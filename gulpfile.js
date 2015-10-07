@@ -46,7 +46,7 @@ gulp.task('staticFiles:dev', function() {
     .pipe(gulp.dest('build/'));
 });
 
-gulp.task('servertest', function() {
+gulp.task('servertests', function() {
   return gulp.src('./test/api_test/**.*test.js')
     .pipe(mocha({reporter: 'nyan'}))
     .once('error', function(err) {
