@@ -19,7 +19,7 @@ gulp.task('jshint', function() {
 gulp.task('test', function() {
   return gulp.src('test/**/*test.js')
     .pipe(mocha({reporter: 'nyan'}));
-}); 
+});
 
 gulp.task('webpack:dev', function() {
   return gulp.src('./app/js/client.js')
