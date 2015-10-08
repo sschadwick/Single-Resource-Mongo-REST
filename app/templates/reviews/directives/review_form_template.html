@@ -1,7 +1,10 @@
 <form data-ng-submit="save({review: review})">
   <label>
     <p>{{labelText}}</p>
-    <input type="text" data-ng-model="review.bookName">
+    <input type="text" placeholder="Book name" data-ng-model="review.bookName">
+    <input type="text" placeholder="Author" data-ng-model="review.author">
+    <br/>
+    <input type="text" placeholder="Write your book review here" data-ng-model="review.review">
   </label>
   <button type="submit">{{buttonText}}</button>
 </form>

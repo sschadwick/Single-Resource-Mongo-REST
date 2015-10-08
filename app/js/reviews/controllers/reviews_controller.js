@@ -4,7 +4,7 @@ module.exports = function(app) {
     $scope.newReview = {};
     var reviewsResource = Resource('reviews');
 
-    $scope.description = 'this is my app description';
+    $scope.description = 'Write or read reviews for your favorite books. Do it. You will enjoy this app.';
 
     $scope.printDescription = function(description) {
       console.log('from the function: ' + description);
@@ -29,17 +29,22 @@ module.exports = function(app) {
     $scope.updateReview = function(review) {
       reviewsResource.update(review, function(err) {
         if (err) {return console.log(err);}
+        if (!review.author) review.author = 'Anonymous';
         review.editing = false;
       });
     };
 
     $scope.editReview = function(review) {
       review.storeBookName = review.bookName;
+      review.storeAuthor = review.author;
+      review.storeReview = review.review;
       review.editing = true;
     };
 
     $scope.cancelUpdate = function(review) {
       review.bookName = review.storeBookName;
+      review.author = review.StoreAuthor;
+      review.review = review.storeReview;
       review.editing = false;
     };
 

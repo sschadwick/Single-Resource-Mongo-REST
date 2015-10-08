@@ -2,20 +2,20 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Book Review</title>
+    <title>Book Reviews</title>
   </head>
   <body data-ng-app="reviewsApp">
     <main data-ng-controller="ReviewsController" data-ng-init="getAll()">
       <div data-bobsled title="Reviews App">{{description}}</div>
-      <h1>Reviews App:</h1>
       <div data-review-form save="createReview(review)"
            data-review="newReview"
-           data-label-text="New Review"
+           data-label-text="Write A New Review:"
            data-button-text="Add Review"
       ></div>
       <ul id="reviewsList">
         <li class="{{review.status}}" data-ng-repeat="review in reviews">
-          <span data-ng-if="!review.editing">{{review.bookName | sentencify}}
+          <span data-ng-if="!review.editing">Book: {{review.bookName}} Author: {{review.author}}
+            <p>Review: {{review.review | sentencify}}</p>
             <button data-ng-click="editReview(review)">Edit</button>
             <button data-ng-click="removeReview(review)">Delete</button>
           </span>
@@ -26,7 +26,7 @@
              data-review="review"
              data-save="updateReview(review)">
         </div>
-        <button data-ng-if="review.editing" data-ng-click="review.editing = false">Cancel</button>
+        <button data-ng-if="review.editing" data-ng-click="cancelUpdate(review)">Cancel</button>
 
         </li>
       </ul>
