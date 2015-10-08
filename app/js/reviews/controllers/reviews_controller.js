@@ -27,9 +27,9 @@ module.exports = function(app) {
     };
 
     $scope.updateReview = function(review) {
+      if (!review.author) review.author = 'Anonymous';
       reviewsResource.update(review, function(err) {
         if (err) {return console.log(err);}
-        if (!review.author) review.author = 'Anonymous';
         review.editing = false;
       });
     };
