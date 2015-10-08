@@ -14,8 +14,9 @@
       ></div>
       <ul id="reviewsList">
         <li class="{{review.status}}" data-ng-repeat="review in reviews">
-          <span data-ng-if="!review.editing">Book: {{review.bookName}} Author: {{review.author}}
-            <p>Review: {{review.review | sentencify}}</p>
+          <span data-ng-if="!review.editing">Book: {{review.bookName}}<br/>
+          Author: {{review.author}}<br/>
+          Review: {{review.review | sentencify}}<br/>
             <button data-ng-click="editReview(review)">Edit</button>
             <button data-ng-click="removeReview(review)">Delete</button>
           </span>
