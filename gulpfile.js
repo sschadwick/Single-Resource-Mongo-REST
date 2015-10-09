@@ -16,11 +16,6 @@ gulp.task('jshint', function() {
     .pipe(jshint.reporter('default'));
 });
 
-gulp.task('test', function() {
-  return gulp.src('test/**/*test.js')
-    .pipe(mocha({reporter: 'nyan'}));
-});
-
 gulp.task('watch', function() {
   return gulp.watch(filesToWatch, ['default']);
 });
@@ -69,6 +64,8 @@ gulp.task('karmatests', ['webpack:test'], function(done) {
   }, done).start();
 });
 
+gulp.task('test', ['servertests', 'karmatests']);
+
 gulp.task('watch', function() {
   return gulp.watch(filesToWatch, ['default']);
 });
@@ -76,4 +73,4 @@ gulp.task('watch', function() {
 gulp.task('build:dev', ['staticFiles:dev', 'webpack:dev']);
 
 //TODO add jshint, servertest tasks, build:dev.
-gulp.task('default', ['karmatests']);
+gulp.task('default', ['test']);
