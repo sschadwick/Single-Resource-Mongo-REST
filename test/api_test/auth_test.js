@@ -5,11 +5,11 @@ var chaihttp = require('chai-http');
 chai.use(chaihttp);
 var expect = chai.expect;
 process.env.MONGO_URL = 'mongodb://localhost/reviews_dev';
-require(__dirname + '/../server');
+require(__dirname + '/../../server');
 var mongoose = require('mongoose');
-var User = require(__dirname + '/../models/user');
-var eatauth = require(__dirname + '/../lib/eat_auth');
-var httpBasic = require(__dirname + '/../lib/http_basic');
+var User = require(__dirname + '/../../models/user');
+var eatauth = require(__dirname + '/../../lib/eat_auth');
+var httpBasic = require(__dirname + '/../../lib/http_basic');
 var host = 'localhost:3000/api';
 
 describe('http basic: header authorization', function() {

@@ -4,7 +4,7 @@
   "description": "a single rest resource with authentication",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha test",
+    "test": "./node_modules/mocha/bin/mocha test/api_test",
     "start": "node server.js"
   },
   "author": "Steven Chadwick <sschadwick@gmail.com> (http://www.github.com/sschadwick)",

@@ -4,27 +4,31 @@ var chai = require('chai');
 var chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 var expect = chai.expect;
-var User = require(__dirname + '/../models/user');
 
 process.env.MONGO_URL = 'mongodb://localhost/review_test';
-var server = require(__dirname + '/../../server.js');
+require(__dirname + '/../../server');
 var mongoose = require('mongoose');
-var url = 'localhost:3000/api/';
+var url = 'localhost:3000/api';
+
+var EventEmitter = require('events').EventEmitter;
+var ee = new EventEmitter();
+
 var Review = require(__dirname + '/../../models/review');
+var User = require(__dirname + '/../../models/user');
 
 describe('the reviews resource', function() {
   after(function(done) {
-    server.close();
     mongoose.connection.db.dropDatabase(function(err) {
       if (err) throw err;
       done();
     });
   });
 
+  //tests that ee alternative in users_routes works the same as the PYRAMIDS OF DOOM
   before(function(done) {
     var user = new User();
     user.username = 'test';
-    user.basic.username = 'test'; //in case we need it
+    user.basic.username = 'test';
     user.generateHash('foobar123', function(err, res) {
       if (err) throw err;
       user.save(function(err, data) {
@@ -41,6 +45,7 @@ describe('the reviews resource', function() {
   it('should be able to get reviews', function(done) {
     chai.request(url)
     .get('/reviews')
+    .send({token: this.token})
     .end(function(err, res) {
       expect(err).to.eql(null);
       expect(Array.isArray(res.body)).to.eql(true);
@@ -51,7 +56,7 @@ describe('the reviews resource', function() {
   it('should create a new review', function(done) {
     chai.request(url)
     .post('/reviews')
-    .send({bookName: 'It was a good book'})
+    .send({bookName: 'It was a good book', token: this.token})
     .end(function(err, res) {
       expect(err).to.eql(null);
       expect(res.body.bookName).to.eql('It was a good book');
@@ -64,7 +69,7 @@ describe('the reviews resource', function() {
   //before each requires slightly more resources
   describe('routes that require a review in db', function() {
     beforeEach(function(done) {
-      var testReview = new Review({bookName: 'Phonebook', review: 'Riveting story.', favorite: true});
+      var testReview = new Review({bookName: 'Phonebook', review: 'Riveting story.', favorite: true, token: this.token});
       testReview.save(function(err, data) { //only working if review >= 10char
         if (err) console.log(err.errors.review.message);
         this.testReview = data;
@@ -75,7 +80,7 @@ describe('the reviews resource', function() {
     it('should be able to upload a new review', function(done) {
       chai.request(url)
       .put('/reviews/' + this.testReview._id)
-      .send({bookName: 'Heres another book'})
+      .send({bookName: 'Heres another book', token: this.token})
       .end(function(err, res) {
         expect(err).to.eql(null);
         expect(res.body.msg).to.eql('success'); //success message is from routes
@@ -86,6 +91,7 @@ describe('the reviews resource', function() {
     it('should be able to delete a review', function(done) {
       chai.request(url)
       .delete('/reviews/' + this.testReview._id)
+      .set('token', this.token)
       .end(function(err, res) {
         expect(err).to.eql(null);
         expect(res.body.msg).to.eql('success');
@@ -96,7 +102,7 @@ describe('the reviews resource', function() {
     it('should validate and ask for more characters in review object', function(done) {
       chai.request(url)
       .post('/reviews/')
-      .send({bookName: 'Yet another book', review: 'too short'}) //this review should be too short
+      .send({bookName: 'Yet another book', review: 'too short', token: this.token})
       .end(function(err, res) {
         expect(res.status).to.eql(500);
         expect(res.body.msg).to.eql('error encountered');
