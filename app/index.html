@@ -5,34 +5,9 @@
     <title>Book Reviews</title>
   </head>
   <body data-ng-app="reviewsApp">
-    <main data-ng-controller="ReviewsController" data-ng-init="getAll()">
-      <div data-bobsled title="Reviews App">{{description}}</div>
-      <div data-review-form save="createReview(review)"
-           data-review="newReview"
-           data-label-text="Write A New Review:"
-           data-button-text="Add Review"
-      ></div>
-      <ul id="reviewsList">
-        <li class="{{review.status}}" data-ng-repeat="review in reviews">
-          <span data-ng-if="!review.editing">Book: {{review.bookName}}<br/>
-          Author: {{review.author}}<br/>
-          Review: {{review.review | sentencify}}<br/>
-            <button data-ng-click="editReview(review)">Edit</button>
-            <button data-ng-click="removeReview(review)">Delete</button>
-          </span>
-        <div data-review-form
-             data-ng-if="review.editing"
-             data-label-text="Edit Review"
-             data-button-text="Save Changes"
-             data-review="review"
-             data-save="updateReview(review)">
-        </div>
-        <button data-ng-if="review.editing" data-ng-click="cancelUpdate(review)">Cancel</button>
-
-        </li>
-      </ul>
+    <h1>Inside the App</h1>
+    <main data-ng-view>
     </main>
-  
     <script src="bundle.js"></script>
   </body>
 </html>
