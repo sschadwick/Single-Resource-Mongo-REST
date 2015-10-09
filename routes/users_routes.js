@@ -4,6 +4,7 @@ var express = require('express');
 var User = require(__dirname + '/../models/user');
 var jsonParser = require('body-parser').json();
 var handleError = require(__dirname + '/../lib/handle_error');
+var eatAuth = require(__dirname + '/../lib/eat_auth');
 var httpBasic = require(__dirname + '/../lib/http_basic');
 var EventEmitter = require('events').EventEmitter;
 var ee = new EventEmitter();
@@ -38,6 +39,9 @@ ee.on('generateToken', function(req, res, newUser) {
   }.bind(this));
 });
 
+usersRouter.get('/username', jsonParser, eatAuth, function(req, res) {
+  res.json({username: req.user.username});
+});
 
 usersRouter.get('/signin', httpBasic, function(req, res) {
   ee.emit('findOne', req, res);

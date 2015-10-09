@@ -9,6 +9,7 @@ function validator(v) {
 var reviewSchema = new mongoose.Schema({
   bookName: {type: String, required: true},
   author: {type: String, default: 'Anonymous'},
+  reviewedBy: String,
   review: {
     type: String,
     validate: [validator, 'You need to write more']

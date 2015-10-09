@@ -5,6 +5,7 @@
     <title>Book Reviews</title>
   </head>
   <body data-ng-app="reviewsApp">
+  <a data-ng-if="loggedIn()" href data-ng-click="logOut()">Log Out{{username? ' of ' + username : ''}}</a>
     <h1>Inside the App</h1>
     <main data-ng-view>
     </main>
