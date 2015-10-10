@@ -14,7 +14,7 @@ var reviewSchema = new mongoose.Schema({
     type: String,
     validate: [validator, 'You need to write more']
   },
-  favorite: Boolean
+  publish: {type: Boolean, default: false}
 });
 
 module.exports = mongoose.model('Review', reviewSchema);

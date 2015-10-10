@@ -42,9 +42,9 @@ reviewsRoute.delete('/reviews/:id', jsonParser, eatAuth, function(req, res) {
   });
 });
 
-reviewsRoute.get('/favReviews', jsonParser, function(req, res) {
-  Review.find({'favorite': 'true'}, 'bookName review favorite', function(err, fav) {
+reviewsRoute.get('/published', jsonParser, function(req, res) {
+  Review.find({'publish': 'true'}, 'bookName author review publish', function(err, pub) {
     if (err) throw err;
-    res.json({msg: fav});
+    res.json({msg: pub});
   });
 });

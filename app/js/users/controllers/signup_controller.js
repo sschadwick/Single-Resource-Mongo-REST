@@ -3,7 +3,7 @@ module.exports = function(app) {
     $scope.buttonText = 'Create A New User';
     $scope.confirmPassword = true;
     $scope.user = {};
-    $scope.changePlacesText = 'Or Sign into an Existing User';
+    $scope.changePlacesText = 'Sign into an Existing Account';
 
     $scope.passwordMatch = function(user) {
       return user.password === user.confirmation;

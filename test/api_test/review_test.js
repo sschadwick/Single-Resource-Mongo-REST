@@ -29,6 +29,7 @@ describe('the reviews resource', function() {
     var user = new User();
     user.username = 'test';
     user.basic.username = 'test';
+    user.publish = true;
     user.generateHash('foobar123', function(err, res) {
       if (err) throw err;
       user.save(function(err, data) {
@@ -69,7 +70,7 @@ describe('the reviews resource', function() {
   //before each requires slightly more resources
   describe('routes that require a review in db', function() {
     beforeEach(function(done) {
-      var testReview = new Review({bookName: 'Phonebook', review: 'Riveting story.', favorite: true, token: this.token});
+      var testReview = new Review({bookName: 'Phonebook', review: 'Absolutely thrilling.', publish: true, token: this.token});
       testReview.save(function(err, data) { //only working if review >= 10char
         if (err) console.log(err.errors.review.message);
         this.testReview = data;
@@ -111,14 +112,15 @@ describe('the reviews resource', function() {
     });
   });
 
-  describe('favReviews path', function() {
-    it('should return a list of favorited reviews', function(done) {
+  describe('published reviews', function() {
+    it('should return a list of published reviews', function(done) {
       chai.request(url)
-      .get('/favReviews')
+      .get('/published/')
       .end(function(err, res) {
+        debugger;
         expect(err).to.eql(null);
         expect(res.body.msg.length).to.be.above(0);
-        expect(res.body.msg[0].favorite).to.eql(true);
+        expect(res.body.msg[0].publish).to.eql(true);
         done();
       });
     });

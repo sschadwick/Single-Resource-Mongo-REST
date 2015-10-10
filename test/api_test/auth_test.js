@@ -4,7 +4,7 @@ var chai = require('chai');
 var chaihttp = require('chai-http');
 chai.use(chaihttp);
 var expect = chai.expect;
-process.env.MONGO_URL = 'mongodb://localhost/reviews_dev';
+process.env.MONGO_URL = 'mongodb://localhost/review_test';
 require(__dirname + '/../../server');
 var mongoose = require('mongoose');
 var User = require(__dirname + '/../../models/user');
