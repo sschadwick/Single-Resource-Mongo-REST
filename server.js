@@ -13,6 +13,14 @@ process.env.APP_SECRET = process.env.APP_SECRET || 'changemechangemechangeme';
 
 var reviewRouter = require(__dirname + '/routes/reviews_routes');
 var userRouter = require(__dirname + '/routes/users_routes');
+
+app.use(function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
+  next();
+});
+
 app.use('/api/', reviewRouter);
 app.use('/api/', userRouter);
 
