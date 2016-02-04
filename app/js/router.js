@@ -9,7 +9,7 @@ module.exports = function(reviewsApp) {
         controller: 'SignupController'
       })
       .when('/signin', {
-        templateUrl: '/templates/users/views/signupin_view.html',
+        templateUrl: '/templates/users/views/s{ignupin_view.html',
         controller: 'SigninController'
       })
       .otherwise({
