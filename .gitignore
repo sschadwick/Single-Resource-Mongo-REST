@@ -1,0 +1,6 @@
+node_modules
+**/db
+**/data
+**/build
+**/test_bundle.js
+**/*bundle.js
